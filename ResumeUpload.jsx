@@ -9,7 +9,7 @@ const ResumeUpload = ({ onDataParsed }) => {
   
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    // Validation: Ensure it is a PDF
+
     if (selectedFile && selectedFile.type !== "application/pdf") {
       setError("Please upload a PDF file only.");
       setFile(null);
@@ -22,7 +22,7 @@ const ResumeUpload = ({ onDataParsed }) => {
   const uploadAndParse = async () => {
     if (!file) return;
 
-    // STEP 1: Wrap file in FormData
+   
     const formData = new FormData();
     formData.append("resume", file); 
 
