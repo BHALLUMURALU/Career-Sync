@@ -4,7 +4,7 @@ import { X, Save, Briefcase, Code, Award, Globe, Trash2, ChevronDown, Phone, Mai
 const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
   const [formData, setFormData] = useState(aiData);
 
-  // 1. Strict Mapping Data for Dependent Dropdowns
+
   const courseData = {
     "B.Tech": ["CSE", "AI&DS", "ECE", "EEE", "MECH", "CIVIL"],
     "B.C.A": ["Computer Applications"],
@@ -29,10 +29,10 @@ const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
   const handleNestedChange = (index, field, value, category) => {
     const updatedCategory = [...formData[category]];
   
-    // If the field is tech_stack, convert the string back to an array
+   
     if (field === 'tech_stack') {
-      // split(',') turns the string into an array
-      // .map(item => item.trimStart()) ensures spaces after commas don't break the layout
+   
+  
       updatedCategory[index][field] = typeof value === 'string' ? value.split(',') : value;
     } else {
       updatedCategory[index][field] = value;
@@ -50,7 +50,7 @@ const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-slate-700 rounded-3xl shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] w-full max-w-6xl max-h-[95vh] flex flex-col overflow-hidden border-4 border-slate-900">
         
-        {/* Header */}
+       
         <div className="p-6 border-b-4 border-slate-900 bg-slate-800 sticky top-0 z-10 flex justify-between items-center">
           <div>
             <h2 className="text-3xl font-black text-pink-600 tracking-tighter uppercase italic flex items-center gap-3">
@@ -66,10 +66,10 @@ const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
           </button>
         </div>
 
-        {/* Scrollable Content */}
+       
         <div className="p-8 overflow-y-auto space-y-16 bg-slate-700 scrollbar-thin scrollbar-thumb-slate-300 text-slate-300">
           
-          {/* 1. IDENTITY & ACADEMICS */}
+        
           <section className="space-y-8">
             <div className="flex items-center gap-4">
               <h3 className="font-black uppercase tracking-tighter text-lg px-3 py-1">01 . Identity & Education</h3>
@@ -137,7 +137,7 @@ const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
             </div>
           </section>
 
-          {/* 2. ACADEMIC METRICS */}
+         
           <section className="space-y-8">
             <div className="flex items-center gap-4">
               <h3 className="font-black uppercase tracking-tighter text-lg px-3 py-1">02 . Performance Metrics</h3>
@@ -164,7 +164,7 @@ const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
             </div>
           </section>
 
-          {/* 3. TECHNICAL STACK */}
+        
           <section className="space-y-8">
             <div className="flex items-center gap-4">
               <h3 className="font-black uppercase tracking-tighter text-lg px-3 py-1">03 . Technical Stack</h3>
@@ -182,7 +182,7 @@ const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
             </div>
           </section>
 
-          {/* 4. PROJECTS */}
+     
           <section className="space-y-8">
             <div className="flex items-center gap-4">
               <h3 className="font-black uppercase tracking-tighter text-lg px-3 py-1">04 . Featured Projects</h3>
@@ -203,10 +203,10 @@ const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
   value={Array.isArray(proj.tech_stack) ? proj.tech_stack.join(",") : (proj.tech_stack || '')} 
   onChange={(e) => {
     const val = e.target.value;
-    // Option A: If your state MUST be an array:
+  
     // handleNestedChange(idx, 'tech_stack', val.split(','), 'projects')
     
-    // Option B: If you want to handle the split inside handleNestedChange:
+    
     handleNestedChange(idx, 'tech_stack', val, 'projects')
   }} 
   className="w-full text-lg tracking-tighter outline-none border-b-2 border-slate-400 focus:border-pink-600 pb-1 bg-transparent text-white" 
@@ -224,7 +224,7 @@ const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
             </div>
           </section>
 
-          {/* 5. INTERNSHIPS */}
+      
           <section className="space-y-8">
             <div className="flex items-center gap-4">
               <h3 className="font-black uppercase tracking-tighter text-lg px-3 py-1">05 . Internships</h3>
@@ -253,7 +253,7 @@ const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
             </div>
           </section>
 
-          {/* 6. CERTIFICATIONS */}
+     
           <section className="space-y-8 pb-10">
             <div className="flex items-center gap-4">
               <h3 className="font-black uppercase tracking-tighter text-lg px-3 py-1">06 . Certifications</h3>
@@ -280,7 +280,6 @@ const ProfilePreviewModal = ({ aiData, onSave, onClose }) => {
           </section>
         </div>
 
-        {/* Footer */}
         <div className="p-8 border-t-4 border-slate-900 bg-slate-800 flex justify-end items-center gap-10">
           <button onClick={onClose} className="text-sm font-black text-slate-400 uppercase tracking-[0.3em] hover:text-white transition-all">Discard Changes</button>
           <button 
