@@ -63,7 +63,7 @@ const startEmailListener = async () => {
                 const message = await client.fetchOne(data.count, { source: true });
                 const parsed = await simpleParser(message.source);
                 
-                // --- NEW: EXTRACT SENDER EMAIL ---
+               
                 const companyEmail = parsed.from && parsed.from.value[0] ? parsed.from.value[0].address : null;
                 const subject = (parsed.subject || "").toLowerCase();
                 const body = parsed.text || "";
@@ -73,7 +73,7 @@ const startEmailListener = async () => {
 
                 console.log(`📩 Processing: ${parsed.subject} from ${companyEmail}`);
                 
-                // 1. Extract and STORE Attachments locally
+               
                 const storedAttachments = [];
                 if (parsed.attachments && parsed.attachments.length > 0) {
                     for (const att of parsed.attachments) {
@@ -112,7 +112,7 @@ const startEmailListener = async () => {
                             );
                             console.log(`📍 Updated existing drive: ${driveId} with email ${companyEmail}`);
                         } else {
-                            // --- ADDED company_email TO INSERT ---
+                           
                             const driveRes = await dbClient.query(
                                 `INSERT INTO placement_drives (company_name, location, drive_date, min_cgpa, max_backlogs, post_type, placement_year, company_email) 
                                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING drive_id`,
@@ -124,7 +124,7 @@ const startEmailListener = async () => {
                                     driveData.drive.max_backlogs, 
                                     "automation", 
                                     driveData.drive.drive_year,
-                                    companyEmail // Storing the extracted email
+                                    companyEmail 
                                 ]
                             );
                             driveId = driveRes.rows[0].drive_id;
@@ -138,7 +138,7 @@ const startEmailListener = async () => {
                         }
                         await dbClient.query('COMMIT');
 
-                        // 3. Automated Dispatch
+                        
                         if (existingRes.rows.length > 0) {
                             const applicants = await dbClient.query(
                                 `SELECT ss.email FROM placement_applications pa 
