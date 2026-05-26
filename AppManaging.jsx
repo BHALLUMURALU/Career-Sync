@@ -44,10 +44,10 @@ const AppManaging = () => {
     const { name, value } = e.target;
     if (name === "course") {
       setCourseSelection({ course: value, department: "" });
-      setSelectedBranch(""); // Reset final selection when course changes
+      setSelectedBranch(""); 
     } else {
       setCourseSelection(prev => ({ ...prev, [name]: value }));
-      setSelectedBranch(value); // The department/branch is the actual value to be saved
+      setSelectedBranch(value); 
     }
   };
 
