@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import Header from "../../components/Studentheader"; // Reuse your existing Header
+import Header from "../../components/Studentheader";
 import Footer from '../../components/Footer';
 const AdminDashboard = () => {
   const location = useLocation();
