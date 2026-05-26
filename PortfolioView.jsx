@@ -23,10 +23,10 @@ const PortfolioView = () => {
       .then(res => {
         const fetchedData = res.data;
         
-        // Helper to construct the full URL
+     
         // const getUrl = (path) => `http://localhost:5000/${path.replace(/\\/g, '/')}`;
   
-        // Check if resume array exists and has at least one item
+       
         const resumeUrl = (fetchedData.resume && fetchedData.resume.length > 0) 
           ? getUrl(fetchedData.resume[0].file_path) 
           : null;
