@@ -224,7 +224,7 @@ function Login() {
                 onChange={(e) =>
                   setForgotdata({ ...forgotdata, mail: e.target.value })
                 }
-                disabled={getotp} // lock email once OTP is sent
+                disabled={getotp} 
                 required
               />
               <button
@@ -234,7 +234,7 @@ function Login() {
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-gray-800 hover:bg-gray-700"
                 }`}
-                onClick={handleGetOtp} // ← wired up
+                onClick={handleGetOtp} 
                 disabled={getotp || otpLoading}
               >
                 {otpLoading ? "Sending..." : getotp ? "Sent ✓" : "Get OTP"}
@@ -254,21 +254,21 @@ function Login() {
                     placeholder="6-digit OTP"
                     maxLength={6}
                     onChange={(e) => setotp({ ...otp, otp: e.target.value })}
-                    disabled={otpverify} // lock once verified
+                    disabled={otpverify}
                     required
                   />
                   {getotp && otp.otp.length === 6 && !otpverify ? (
                     <button
                       type="button"
                       className="absolute right-1 top-7 p-1.5 rounded bg-gray-800 hover:bg-gray-700 transition-all"
-                      onClick={handleOtpVerify} // ← wired up
+                      onClick={handleOtpVerify}
                       disabled={verifyLoading}
                     >
                       {verifyLoading ? "Checking..." : "Verify"}
                     </button>
                   ) : otpverify ? (
                     <span className="absolute right-1 top-8 p-1.5 text-green-400 text-xs font-bold">
-                      Verified ✓
+                      Verified 
                     </span>
                   ) : null}
                 </div>
