@@ -41,7 +41,7 @@ const Viewplacements = () => {
   const submitApplication = async (e, drive) => {
     e.preventDefault();
     try {
-      // Use the database status to check if already applied
+   
       if (!drive.has_applied) {
         const res = await api.post(
           `student/applications/apply`, 
@@ -51,7 +51,7 @@ const Viewplacements = () => {
   
         if (res.status === 200 || res.status === 201) {
           alert("Application submitted successfully!");
-          fetchDrives(); // Refresh to get the new 'has_applied' status from DB
+          fetchDrives();
         }
       } else {
         alert("You have already applied for this role.");
@@ -61,12 +61,12 @@ const Viewplacements = () => {
     }
   };
 
-  // Helper function to render the correct button state
+
   const renderActionButton = (drive) => {
     if (drive.has_applied) {
       const status = drive.application_status;
       
-      // Dynamic styles based on DB status
+     
       let config = {
         style: "bg-green-100 text-green-700 border-2 border-green-300",
         text: status || "Applied",
