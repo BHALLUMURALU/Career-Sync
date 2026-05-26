@@ -30,7 +30,7 @@ const Postdrive = ({ year = 2026 }) => {
     }
   };
 
-  // Switch to Applicants View if a drive is selected for viewing applicants
+ 
   if (viewingApplicantsDrive) {
     return (
       <DriveApplicants 
@@ -136,7 +136,7 @@ const Postdrive = ({ year = 2026 }) => {
   );
 };
 
-// --- DRIVE APPLICANTS COMPONENT ---
+
 const DriveApplicants = ({ drive, onBack }) => {
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -188,18 +188,17 @@ const DriveApplicants = ({ drive, onBack }) => {
     if (selectedIds.length === 0) return;
     
     try {
-      // 1. Get the actual data for selected applicants to show in a confirmation (optional)
-      // 2. Call the new specialized endpoint
+     
       await api.post('/admin/applications/send-to-company', {
         applicationIds: selectedIds,
         driveId: drive.id,
         role_title:drive.roles[0]?.role_title || "N/A",
-         // Ensure your drive object has the company email
+      
       }, config);
   
       alert(`Sheet generated and emailed to ${drive.contact_email || 'the company'}`);
       setSelectedIds([]);
-      fetchApplicants(); // Refresh statuses
+      fetchApplicants();
     } catch (err) {
       console.error(err);
       alert("Failed to send data to company.");
@@ -362,7 +361,7 @@ const DriveApplicants = ({ drive, onBack }) => {
   );
 };
 
-// --- HELPER SUB-COMPONENTS ---
+
 
 const StatCard = ({ label, value, icon, color, bgColor }) => (
   <div className="bg-slate-500 p-6 rounded-3xl border border-slate-200 shadow-sm transition-transform hover:scale-[1.02]">
