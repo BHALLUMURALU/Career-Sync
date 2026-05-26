@@ -251,11 +251,11 @@ const ProfilePage = () => {
     certifications: []
   });
   
-  // This function is triggered when AI parsing is successful
+
   const handleParsedData = (aiData) => {
     console.log("Data received from AI:", aiData);
   
-    // Map AI data to form state, ensuring arrays are never null to avoid .map() errors
+  
     const updatedData = {
       full_name: aiData.full_name || '',
       college_email: aiData.college_email || '',
@@ -278,15 +278,15 @@ const ProfilePage = () => {
     };
   
     setFormData(updatedData);
-    setParsedData(updatedData); // Keeping a reference of raw AI data if needed
-    setShowModal(true); // Open the pop-up card for review
+    setParsedData(updatedData); 
+    setShowModal(true); 
   };
 
 
   const checkProfileCompleteness = () => {
     const missing = [];
   
-    // --- STRING & NUMERIC FIELDS ---
+   
     if (!formData.full_name?.trim()) missing.push("Full Name");
     if (!formData.dob) missing.push("Date of Birth");
     if (!formData.gender) missing.push("Gender");
@@ -300,21 +300,21 @@ const ProfilePage = () => {
     if (formData.xii_diploma_percentage===0) missing.push("12th/Diploma Percentage");
     if (formData.cgpa === 0 ) missing.push("CGPA");
     
-    // Note: backlogs is 0 by default, usually not "missing" unless you want to force a check
+  
     if (formData.backlogs === 0 ) missing.push("Backlogs count");
   
-    // --- SOCIAL & LINKS ---
+  
     if (!formData.github?.trim()) missing.push("GitHub Link");
     if (!formData.linkedin?.trim()) missing.push("LinkedIn Profile");
     if (!formData.portfolio?.trim()) missing.push("Portfolio URL");
   
-    // --- ARRAYS (Lists) ---
+   
     if (formData.internships?.length === 0) missing.push("Internship Details");
     if (formData.projects?.length === 0) missing.push("Projects");
     if (formData.skills?.length === 0) missing.push("Skills");
     if (formData.certifications?.length === 0) missing.push("Certifications");
   
-    // --- RESUME UPLOAD STATUS ---
+   
     if (!formData.resume_url) missing.push("Resume File (Upload failed/missing)");
   
     return missing;
@@ -331,7 +331,7 @@ const handleValidationAlert = async () => {
     alert(message);
 
     try {
-      // DATA is the 2nd argument, CONFIG (headers) is the 3rd
+     
       await api.post("/profile/send-reminder", 
         {
           email: profile.college_email,
@@ -353,12 +353,12 @@ const handleValidationAlert = async () => {
     try {
       console.log("Verified data to save: ", verifiedData);
       // const token = localStorage.getItem('token');
-      // Send the VERIFIED data to your backend save-all route
+   
       const a=  await api.post("/profile/save-all", verifiedData, authConfig);
       console.log("Save response:",a);
       // alert("Profile verified and saved successfully!");
       setShowModal(false); 
-      // Close the modal
+  
       handleValidationAlert();
       refreshUser();
     } catch (err) {
