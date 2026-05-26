@@ -190,9 +190,8 @@ app.get("/api/profile/full-details", auth, async (req, res) => {
       pool.query("SELECT * FROM student_projects WHERE student_id = $1", [sId]),
       pool.query("SELECT * FROM student_skills WHERE student_id = $1", [sId]),
       pool.query("SELECT * FROM student_certifications WHERE student_id = $1", [sId]),
-      pool.query("SELECT * FROM student_resumes WHERE student_id = $1", [sId]), // Added this
-    ]);
-    // console.log(resume.rows[0] )
+      pool.query("SELECT * FROM student_resumes WHERE student_id = $1", [sId]), 
+  
     res.json({
       ...profile,
       internships: internships.rows,
@@ -248,10 +247,10 @@ app.post("/api/profile/save-all", auth, async (req, res) => {
       return null;
     };
 
-    // --- FIX: PRE-PROCESS DATES IN ARRAYS ---
+ 
     const sanitizedInternships = (internships || []).map(item => ({
       ...item,
-      // Map 'company' from AI to 'company_name' for DB, and fix duration
+     
       company_name: item.company || item.company_name, 
       duration: formatToPostgresDate(item.duration)
     }));
@@ -260,7 +259,7 @@ app.post("/api/profile/save-all", auth, async (req, res) => {
       ...item,
       issue_date: formatToPostgresDate(item.issue_date)
     }));
-    // ----------------------------------------
+   
 
     const generateUniqueSlug = (name) => {
       if (!name) return "";
@@ -319,7 +318,7 @@ app.post("/api/profile/save-all", auth, async (req, res) => {
       }
     };
 
-    // Use the SANITIZED arrays here
+   
     await syncTable("student_experience", sanitizedInternships, ["company_name", "role", "duration", "description"], "$2, $3, $4, $5");
     await syncTable("student_projects", projects, ["title", "description", "tech_stack", "project_link"], "$2, $3, $4, $5");
     await syncTable("student_skills", skills, ["skill_name", "proficiency"], "$2, $3");
@@ -441,7 +440,7 @@ app.get("/api/admin/students/approvals", authorize, isAdmin, async (req, res) =>
       `SELECT id, full_name,course, department, roll_number,email, is_approved 
        FROM student_signup`
     );
-    // console.log(result.rows);
+ 
     res.json(result.rows); 
   } catch (err) {
     console.error("Approval Fetch Error:", err);
@@ -455,7 +454,7 @@ app.get("/api/admin/analytics-complex", authorize,isAdmin, async (req, res) => {
     const selectedYear = parseInt(year);
     const branchFilter = branch === "Overall" ? null : branch;
 
-    // 1. Total Placed (Filtered by Year and optionally Branch)
+ 
     let totalPlacedQuery = `SELECT COUNT(*) FROM placements p 
                             JOIN student_profiles s ON p.student_id = s.student_id 
                             WHERE p.placement_year = $1`;
@@ -467,7 +466,7 @@ app.get("/api/admin/analytics-complex", authorize,isAdmin, async (req, res) => {
     }
     const totalRes = await pool.query(totalPlacedQuery, totalParams);
 
-    // 2. Distribution by Branch (Only useful for "Overall" view)
+
     let branchQuery = `SELECT s.branch, COUNT(*) as count FROM placements p 
     JOIN student_profiles s ON p.student_id = s.student_id 
     WHERE p.placement_year = $1`;
@@ -480,7 +479,7 @@ app.get("/api/admin/analytics-complex", authorize,isAdmin, async (req, res) => {
     branchQuery += ` GROUP BY s.branch`;
     const branchDistRes = await pool.query(branchQuery, branchParams);
 
-    // 3. Distribution by Company (Top 5 companies)
+ 
     let companyQuery = `SELECT p.company_name as company, COUNT(*) as count 
                         FROM placements p 
                         JOIN student_profiles s ON p.student_id = s.student_id 
@@ -494,7 +493,7 @@ app.get("/api/admin/analytics-complex", authorize,isAdmin, async (req, res) => {
     companyQuery += ` GROUP BY p.company_name ORDER BY count DESC LIMIT 8`;
     const companyDistRes = await pool.query(companyQuery, companyParams);
 
-    // 4. History Data (Last 3 years growth)
+ 
     let historyQuery = `SELECT p.placement_year as year, COUNT(*) as count 
                         FROM placements p 
                         JOIN student_profiles s ON p.student_id = s.student_id 
@@ -508,7 +507,7 @@ app.get("/api/admin/analytics-complex", authorize,isAdmin, async (req, res) => {
     historyQuery += ` GROUP BY p.placement_year ORDER BY p.placement_year ASC`;
     const historyRes = await pool.query(historyQuery, historyParams);
 
-    // Send everything back
+   
     res.json({
       totalPlaced: parseInt(totalRes.rows[0].count),
       byBranch: branchDistRes.rows,
@@ -1190,7 +1189,7 @@ app.get('/api/admin/drive-applicants/:driveId', auth,isAdmin, async (req, res) =
 });
 
 app.post('/api/admin/applications/bulk-status', auth, async (req, res) => {
-  const { applicationIds, newStatus } = req.body; // e.g., ['Sent to Company', 'Shortlisted']
+  const { applicationIds, newStatus } = req.body; 
 
   if (!applicationIds || applicationIds.length === 0) {
     return res.status(400).json({ error: "No students selected" });
@@ -1214,7 +1213,6 @@ app.post('/api/admin/applications/bulk-status', auth, async (req, res) => {
 
 
 
-// 1. Setup Transporter (Use App Password for Gmail)
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -1223,13 +1221,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// 2. The Email Route
+
 app.post("/api/profile/send-reminder", auth, async (req, res) => {
   try {
     const { full_name, missingFields = [] } = req.body;
     const userId = req.user.id;
 
-    // Fetch the latest email from signup table to ensure accuracy
+ 
     const userResult = await pool.query("SELECT email FROM student_signup WHERE id=$1", [userId]);
     
     if (userResult.rows.length === 0) {
@@ -1278,7 +1276,7 @@ app.post('/api/admin/applications/send-to-company', auth, isAdmin, async (req, r
   }
 
   try {
-      // 1. Get Company Email
+  
       const emailResult = await pool.query("SELECT company_email FROM placement_drives WHERE drive_id = $1", [driveId]);
       
       if (emailResult.rows.length === 0 || !emailResult.rows[0].company_email) {
@@ -1286,8 +1284,7 @@ app.post('/api/admin/applications/send-to-company', auth, isAdmin, async (req, r
       }
       const fetchedEmail = emailResult.rows[0].company_email;
 
-      // 2. Fetch Applicants (Fixed Hyphen and Array logic)
-      // We use ANY($1) for PostgreSQL array matching
+
       const applicantsResult = await pool.query(`
         SELECT 
             u.full_name, 
@@ -1305,14 +1302,14 @@ app.post('/api/admin/applications/send-to-company', auth, isAdmin, async (req, r
     
     const applicants = applicantsResult.rows;
       console.log(applicants);
-      // const applicants = applicantsResult.rows;
+   
       
 
       if (applicants.length === 0) {
           return res.status(404).json({ error: "No applicants found for provided IDs" });
       }
 
-      // 3. Create Excel Workbook
+
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Applicant Data');
 
@@ -1331,7 +1328,7 @@ app.post('/api/admin/applications/send-to-company', auth, isAdmin, async (req, r
 
       const buffer = await workbook.xlsx.writeBuffer();
 
-      // 4. Setup Nodemailer
+
       const transporter = nodemailer.createTransport({
           service: 'gmail',
           auth: {
@@ -1351,7 +1348,7 @@ app.post('/api/admin/applications/send-to-company', auth, isAdmin, async (req, r
           }]
       };
 
-      // 5. Send Email and Update Database
+   
       await transporter.sendMail(mailOptions);
       
       await pool.query(
@@ -1372,11 +1369,7 @@ app.post('/api/admin/applications/send-to-company', auth, isAdmin, async (req, r
 
 
 
-// routes/auth.js  — add these 3 routes
 
-
-
-// 1. Send OTP
 app.post("/api/auth/forgot-password", async (req, res) => {
   const { email } = req.body;
   console.log(email);
@@ -1399,7 +1392,7 @@ app.post("/api/auth/forgot-password", async (req, res) => {
   res.json({ msg: "OTP sent" });
 });
 
-// 2. Verify OTP
+
 app.post("/api/auth/verify-otp", (req, res) => {
   const { email, otp } = req.body;
   const record = otpStore.get(email);
@@ -1414,7 +1407,7 @@ app.post("/api/auth/verify-otp", (req, res) => {
   res.json({ msg: "OTP verified" });
 });
 
-// 3. Reset Password
+
 app.post("/api/auth/reset-password", async (req, res) => {
   const { email, otp, newPassword } = req.body;
   const record = otpStore.get(email);
