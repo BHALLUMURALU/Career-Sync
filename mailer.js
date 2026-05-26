@@ -71,19 +71,19 @@ const sendUnifiedDriveEmail = async (driveId, options = null) => {
   try {
 
     // console.log("hiiii",options);
-    // --- MODE: BROADCAST (Automation Flow with Stored Attachments) ---
+   
     if (options && options.to) {
       console.log(`📧 Broadcaster: Dispatching update with ${options.attachments?.length || 0} stored attachments to ${options.to.length} students.`);
       
       const broadcastMailOptions = {
         from: `"TPO Placement Cell" <${process.env.EMAIL_USER}>`,
-        bcc: options.to, // Using BCC is safer for bulk automated updates
+        bcc: options.to, 
         subject: options.subject || "Placement Drive Update",
         text: options.text || "Please find the attached document regarding the placement drive.",
-        // UPDATED: Now uses 'path' to pull files stored in the system
+       
         attachments: (options.attachments || []).map(att => ({
             filename: att.filename,
-            path: att.path, // This tells Nodemailer to read the file from the disk
+            path: att.path, 
             contentType: att.contentType
         }))
       };
@@ -97,7 +97,7 @@ const sendUnifiedDriveEmail = async (driveId, options = null) => {
       return; 
     }
 
-    // --- MODE: STANDARD (New Drive Notification) ---
+   
     const reportQuery = `
      SELECT 
     sp.full_name AS name, 
@@ -175,7 +175,7 @@ const sendUnifiedDriveEmail = async (driveId, options = null) => {
       };
 
       await transporter.sendMail(mailOptions);
-      await new Promise(res => setTimeout(res, 500)); // Throttling
+      await new Promise(res => setTimeout(res, 500)); 
     }
   } catch (error) {
     console.error('Unified Mailing Error:', error);
