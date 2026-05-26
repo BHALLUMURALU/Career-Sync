@@ -24,7 +24,7 @@ function Login() {
   const [verifyLoading, setVerifyLoading] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
 
-  // ─── FORGOT PASSWORD: Send OTP ───────────────────────────────────────────────
+
   const handleGetOtp = async () => {
     if (!forgotdata.mail) {
       alert("Please enter your email address.");
@@ -44,7 +44,7 @@ function Login() {
     }
   };
 
-  // ─── FORGOT PASSWORD: Verify OTP ─────────────────────────────────────────────
+  
   const handleOtpVerify = async (e) => {
     e.preventDefault();
 
@@ -69,7 +69,7 @@ function Login() {
     }
   };
 
-  // ─── FORGOT PASSWORD: Reset Password ─────────────────────────────────────────
+ 
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
@@ -87,7 +87,7 @@ function Login() {
       });
       setResetSuccess(true);
       alert("Password reset successful! Please login with your new password.");
-      // Reset all forgot states and go back to login
+     
       setForgot(false);
       sentotp(false);
       setotpverify(false);
@@ -160,7 +160,7 @@ function Login() {
         onSubmit={handleSubmit}
         className="border border-slate-300 bg-transparent flex flex-col w-96 h-auto items-center rounded-xl p-8 shadow-2xl"
       >
-        {/* Form content goes here */}
+       
       <h1 className="text-3xl text-slate-200 font-bold mb-8">Welcome Back</h1>
       {!forgot ? (
           <div className="w-full">
@@ -212,7 +212,7 @@ function Login() {
           </div>
         ) : (
           <div className="w-full">
-            {/* ── Step 1: Email + Get OTP ── */}
+            
             <div className="relative w-full mb-4 flex flex-col items-start">
               <label className="text-sm font-semibold text-slate-300 ml-1">
                 Email Address
@@ -241,7 +241,7 @@ function Login() {
               </button>
             </div>
 
-            {/* ── Step 2: OTP Input ── */}
+           
             {getotp && (
               <div>
                 <div className="relative w-full mb-4 flex flex-col items-start">
@@ -273,7 +273,7 @@ function Login() {
                   ) : null}
                 </div>
 
-                {/* ── Step 3: New Password (after OTP verified) ── */}
+                
                 {otpverify && (
                   <div className="relative w-full mb-4 flex flex-col items-start">
                     <label className="text-sm font-semibold text-slate-300 ml-1">
@@ -289,7 +289,7 @@ function Login() {
                     <button
                       type="button"
                       className="mt-2 w-full h-10 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-all"
-                      onClick={handleResetPassword} // ← wired up
+                      onClick={handleResetPassword} 
                       disabled={resetLoading}
                     >
                       {resetLoading ? "Resetting..." : "Reset Password"}
